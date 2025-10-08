@@ -1,4 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+/** Define the shape of our task */
+interface Task {
+  id: number;
+  text: string;
+  isActive: boolean; // true = pending, false = completed
+}
+
+/** Storage key (include version to help migrations later) */
+const STORAGE_KEY = "react-ts-playground.todo.v1";
 
 const App = () => {
   /**
@@ -8,14 +18,38 @@ const App = () => {
    *  - text: task description
    *  - isActive: true = pending, false = completed
    */
-  const [tasks, setTasks] = useState<
-    { id: number; text: string; isActive: boolean }[]
-  >([]);
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    //LOAD from localStorage once
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return []; // No tasks found, return empty array
+      return JSON.parse(raw) as Task[]; // Parse the JSON string stored in localStorage, and interpret the resulting data as an array of Task objects.
+    } catch (err) {
+      console.error("Error loading tasks:", err);
+      return []; // Return empty array in case of error
+    }
+  });
+
   /**
    * 'input' stores the current text user types in the input box.
    * 'setInput' is used to update its value.
    */
   const [input, setInput] = useState("");
+
+  /* -------------------------
+     SAVE to localStorage whenever tasks change
+     -------------------------
+     - stringify tasks and setItem
+     - This is synchronous but OK for small payloads.
+  */
+  useEffect(() => {
+    try {
+      const raw = JSON.stringify(tasks);
+      localStorage.setItem(STORAGE_KEY, raw);
+    } catch (err) {
+      console.log("Failed saving tasks to localStorage: ", err);
+    }
+  }, [tasks]);
 
   /**
    * handleAddTask():
@@ -52,6 +86,12 @@ const App = () => {
     );
   };
 
+  const clearAll = () => {
+    setTasks([]);
+    //remove from localStorage too
+    localStorage.removeItem(STORAGE_KEY);
+  };
+
   return (
     <div>
       {/* Input field to type new task */}
@@ -63,6 +103,7 @@ const App = () => {
       ></input>
       {/* Button to add new task */}
       <button onClick={handleAddTask}>Add Task</button>
+      <button onClick={clearAll}>Clear All</button>
 
       <ul>
         {/*
