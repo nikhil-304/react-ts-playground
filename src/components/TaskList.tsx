@@ -34,7 +34,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onDelete, onToggle }) => {
     */
   }
   return (
-    <ul>
+    <>
       {[...tasks]
         .sort((a, b) => Number(b.isActive) - Number(a.isActive))
         .map((task) => (
@@ -45,7 +45,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onDelete, onToggle }) => {
             onToggle={onToggle}
           />
         ))}
-    </ul>
+    </>
   );
 };
 

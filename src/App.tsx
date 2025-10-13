@@ -87,8 +87,8 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>React + TypeScript Todo App</h1>
+    <div className="ml-15 mt-10">
+      <h1 className="text-3xl font-bold mb-3">React + TypeScript Todo App</h1>
       <TaskInput onAddTask={addTask} onClearAllTask={deleteAllTasks} />
       <TaskList tasks={tasks} onDelete={deleteTask} onToggle={toggleTask} />
     </div>
