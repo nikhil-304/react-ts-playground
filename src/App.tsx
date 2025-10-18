@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import TaskInput from "./components/TaskInput";
 import TaskList from "./components/TaskList";
+import { Inbox } from "lucide-react";
 
 /** Define the shape of our task */
 interface Task {
@@ -87,9 +88,13 @@ function App() {
   };
 
   return (
-    <div className="ml-15 mt-10">
+    <div className="bg-[#f7f7f7] px-15 py-10">
       <h1 className="text-3xl font-bold mb-3">React + TypeScript Todo App</h1>
       <TaskInput onAddTask={addTask} onClearAllTask={deleteAllTasks} />
+      <h1 className="text-3xl font-bold mt-3 flex items-center gap-2">
+        <Inbox />
+        Inbox
+      </h1>
       <TaskList tasks={tasks} onDelete={deleteTask} onToggle={toggleTask} />
     </div>
   );

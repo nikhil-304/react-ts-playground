@@ -38,12 +38,14 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onDelete, onToggle }) => {
       {[...tasks]
         .sort((a, b) => Number(b.isActive) - Number(a.isActive))
         .map((task) => (
-          <TaskItem
-            key={task.id}
-            task={task}
-            onDelete={onDelete}
-            onToggle={onToggle}
-          />
+          <div className="mt-5">
+            <TaskItem
+              key={task.id}
+              task={task}
+              onDelete={onDelete}
+              onToggle={onToggle}
+            />
+          </div>
         ))}
     </>
   );
